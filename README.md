@@ -17,20 +17,20 @@ The default I²C address of [SCD30](https://sensirion.com/products/catalog/SCD30
 
 ### Connecting the Sensor
 
-Your sensor has 7 different signals that need to be connected to your board: VDD, GND, SCL, SDA, RDY, PWM, SEL.
+Your sensor has 5 different signals that need to be connected to your board: VDD, GND, SCL, SDA, SEL.
 Use the following pins to connect your SCD30:
 
 <img src="images/scd30_pinout.jpg" width="300px">
 
 | *Pin* | *Cable Color* | *Name* | *Description*  | *Comments* |
 |-------|---------------|:------:|----------------|------------|
-| 1 |  |VDD | Supply Voltage | 3.3 to 5.5V
-| 2 |  |GND | Ground | 
-| 3 |  |SCL | I2C: Serial clock input | 
-| 4 |  |SDA | I2C: Serial data input / output | 
-| 5 |  |RDY |  | High when data is available
-| 6 |  |PWM |  | 
-| 7 |  |SEL | Interface select | Interface select; Pull to ground or floating for I2c
+| 1 | red |VDD | Supply Voltage | 3.3 to 5.5V
+| 2 | black |GND | Ground | 
+| 3 | yellow |SCL | I2C: Serial clock input | 
+| 4 | green |SDA | I2C: Serial data input / output | 
+| 5 |  |RDY |  | High when data is available - do not connect
+| 6 |  |PWM |  | do not connect
+| 7 | blue |SEL | Interface select | Interface select; Pull to ground or floating for I2c
 The recommended voltage is 3.3V.
 
 ### Configure the code
