@@ -47,6 +47,9 @@ int main(void) {
     sensirion_i2c_hal_init();
     init_driver(SCD30_I2C_ADDR_61);
 
+    // make sure the sensor is in a defined state (soft reset does not stop
+    // periodic measurement)
+    scd30_stop_periodic_measurement();
     scd30_soft_reset();
     sensirion_hal_sleep_us(2000000);
     uint8_t major = 0;
@@ -81,7 +84,7 @@ int main(void) {
         printf("humidiy: %.2f\n", humidiy);
     }
 
-    error = scd30_soft_reset();
+    error = scd30_stop_periodic_measurement();
     if (error != NO_ERROR) {
         return error;
     }
