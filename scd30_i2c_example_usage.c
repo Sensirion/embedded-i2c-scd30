@@ -59,8 +59,7 @@ int main(void) {
         printf("error executing read_firmware_version(): %i\n", error);
         return error;
     }
-    printf("major: %u ", major);
-    printf("minor: %u\n", minor);
+    printf("firmware version major: %u minor: %u\n", major, minor);
     error = scd30_start_periodic_measurement(0);
     if (error != NO_ERROR) {
         printf("error executing start_periodic_measurement(): %i\n", error);
@@ -68,12 +67,12 @@ int main(void) {
     }
     float co2_concentration = 0.0;
     float temperature = 0.0;
-    float humidiy = 0.0;
+    float humidity = 0.0;
     uint16_t repetition = 0;
     for (repetition = 0; repetition < 30; repetition++) {
         sensirion_hal_sleep_us(1500000);
         error = scd30_blocking_read_measurement_data(&co2_concentration,
-                                                     &temperature, &humidiy);
+                                                     &temperature, &humidity);
         if (error != NO_ERROR) {
             printf("error executing blocking_read_measurement_data(): %i\n",
                    error);
@@ -81,11 +80,12 @@ int main(void) {
         }
         printf("co2_concentration: %.2f ", co2_concentration);
         printf("temperature: %.2f ", temperature);
-        printf("humidiy: %.2f\n", humidiy);
+        printf("humidity: %.2f\n", humidity);
     }
 
     error = scd30_stop_periodic_measurement();
     if (error != NO_ERROR) {
+        printf("error executing stop_periodic_measurement(): %i\n", error);
         return error;
     }
     return NO_ERROR;
