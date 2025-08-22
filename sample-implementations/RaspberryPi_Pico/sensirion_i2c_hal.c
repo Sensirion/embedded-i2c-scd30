@@ -1,3 +1,4 @@
+#include <hardware/i2c.h>
 /*
  * Copyright (c) 2018, Sensirion AG
  * All rights reserved.
@@ -29,54 +30,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Enable usleep function */
-#define _DEFAULT_SOURCE
-
-#include "sensirion_i2c_hal.h"
 #include "sensirion_common.h"
 #include "sensirion_config.h"
+#include "sensirion_i2c_hal.h"
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
+/*
+ * INSTRUCTIONS
+ * ============
+ *
+ * Implement all functions where they are marked as IMPLEMENT.
+ * Follow the function specification in the comments.
+ */
 
 /**
- * Linux specific configuration. Adjust the following define to the device path
- * of your sensor.
+ * Select the current i2c bus by index.
+ * All following i2c operations will be directed at that bus.
+ *
+ * THE IMPLEMENTATION IS OPTIONAL ON SINGLE-BUS SETUPS (all sensors on the same
+ * bus)
+ *
+ * @param bus_idx   Bus index to select
+ * @returns         0 on success, an error code otherwise
  */
-#define I2C_DEVICE_PATH "/dev/i2c-1"
-
-/**
- * The following define was taken from i2c-dev.h. Alternatively the header file
- * can be included. The define was added in Linux v3.10 and never changed since
- * then.
- */
-#define I2C_SLAVE 0x0703
-
-#define I2C_WRITE_FAILED -1
-#define I2C_READ_FAILED -1
-
-static int i2c_device = -1;
-static uint8_t i2c_address = 0;
+int16_t sensirion_i2c_hal_select_bus(uint8_t bus_idx) {
+    /* TODO:IMPLEMENT or leave empty if all sensors are located on one single
+     * bus
+     */
+    return NOT_IMPLEMENTED_ERROR;
+}
 
 /**
  * Initialize all hard- and software components that are needed for the I2C
  * communication.
  */
 void sensirion_i2c_hal_init(void) {
-    /* open i2c adapter */
-    i2c_device = open(I2C_DEVICE_PATH, O_RDWR);
-    if (i2c_device == -1)
-        return; /* no error handling */
+    /* TODO:IMPLEMENT */
 }
 
 /**
  * Release all resources initialized by sensirion_i2c_hal_init().
  */
 void sensirion_i2c_hal_free(void) {
-    if (i2c_device >= 0)
-        close(i2c_device);
+    /* TODO:IMPLEMENT or leave empty if no resources need to be freed */
 }
 
 /**
@@ -89,16 +84,12 @@ void sensirion_i2c_hal_free(void) {
  * @param count   number of bytes to read from I2C and store in the buffer
  * @returns 0 on success, error code otherwise
  */
-int8_t sensirion_i2c_hal_read(uint8_t address, uint8_t* data, uint8_t count) {
-    if (i2c_address != address) {
-        ioctl(i2c_device, I2C_SLAVE, address);
-        i2c_address = address;
-    }
-
-    if (read(i2c_device, data, count) != count) {
-        return I2C_READ_FAILED;
-    }
-    return 0;
+int8_t sensirion_i2c_hal_read(uint8_t address, uint8_t* data, uint16_t count) {
+    int status = i2c_read_blocking(i2c_default, address, data, count, false);
+    if (status == 0)
+        return 1;
+    else
+        return 0;
 }
 
 /**
@@ -113,24 +104,24 @@ int8_t sensirion_i2c_hal_read(uint8_t address, uint8_t* data, uint8_t count) {
  * @returns 0 on success, error code otherwise
  */
 int8_t sensirion_i2c_hal_write(uint8_t address, const uint8_t* data,
-                               uint8_t count) {
-    if (i2c_address != address) {
-        ioctl(i2c_device, I2C_SLAVE, address);
-        i2c_address = address;
-    }
+                               uint16_t count) {
+    // I2C Default is used (I2C0).
+    int status = i2c_write_blocking(i2c_default, address, data, count, true);
 
-    if (write(i2c_device, data, count) != count) {
-        return I2C_WRITE_FAILED;
-    }
-    return 0;
+    if (status == 0)
+        return 1;
+    else
+        return 0;
 }
 
 /**
  * Sleep for a given number of microseconds. The function should delay the
  * execution for at least the given time, but may also sleep longer.
  *
+ * Despite the unit, a <10 millisecond precision is sufficient.
+ *
  * @param useconds the sleep time in microseconds
  */
 void sensirion_i2c_hal_sleep_usec(uint32_t useconds) {
-    usleep(useconds);
+    sleep_ms(useconds / 1000);
 }
