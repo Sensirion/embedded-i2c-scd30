@@ -1,9 +1,9 @@
 # Sensirion I2C SCD30 embedded Library
 
-This document explains how to set up a  SCD30 sensor to run on a embedded device
-using the provided code.
+This document explains how to set up a SCD30 sensor
+to run on an embedded device using the I²C interface.
 
-<center><img src="images/sensor_scd30_image.jpg" width="300px"></center>
+<img src="images/sensor_scd30_image.jpg" width="300px">
 
 Click [here](https://sensirion.com/products/catalog/SCD30/) to learn more about the Sensirion SCD30 sensor.
 
@@ -15,22 +15,24 @@ The default I²C address of [SCD30](https://sensirion.com/products/catalog/SCD30
 
 ## Setup Guide
 
-### Connecting the Sensor
+### Connect the Sensor
 
-Your sensor has 5 different signals that need to be connected to your board: VDD, GND, SCL, SDA, SEL.
-Use the following pins to connect your SCD30:
+Your sensor has 7 pins that need to be connected to your board: VDD, GND, SCL, SDA, RDY, PWM, SEL.
+Use the following description to connect your SCD30:
 
 <img src="images/scd30_pinout.jpg" width="300px">
 
 | *Pin* | *Cable Color* | *Name* | *Description*  | *Comments* |
 |-------|---------------|:------:|----------------|------------|
-| 1 | red |VDD | Supply Voltage | 3.3 to 5.5V
-| 2 | black |GND | Ground | 
-| 3 | yellow |SCL | I2C: Serial clock input | 
-| 4 | green |SDA | I2C: Serial data input / output | 
-| 5 |  |RDY | High when data is available | do not connect
-| 6 |  |PWM |  | do not connect
-| 7 | blue |SEL | Interface select | Pull to ground or floating for I2C
+| 1 | red | VDD | Supply Voltage | 3.3V to 5.5V
+| 2 | black | GND | Ground |
+| 3 | yellow | SCL | I2C: Serial clock input |
+| 4 | green | SDA | I2C: Serial data input / output |
+| 5 |  | RDY |  | High when data is available - do not connect
+| 6 |  | PWM |  | do not connect
+| 7 | blue | SEL | Interface select | Pull to ground or floating for I2C
+
+
 
 The recommended voltage is 3.3V.
 
@@ -89,11 +91,26 @@ Here we demonstrate the procedure for Linux based platforms:
 
 1. Open up a terminal.
 2. Navigate to the directory where this README is located.
-3. Run `make` (this compiles the example code into one executable binary).
-4. Run the compiled executable with `./scd30_i2c_example_usage`
-5. Now you should see the first measurement values appear in your terminal. As
+3. Navigate to the subdirectory example-usage.
+4. Run `make` (this compiles the example code into one executable binary).
+5. Run the compiled executable with `./scd30_i2c_example_usage`
+6. Now you should see the first measurement values appear in your terminal. As
    a next step you can adjust the example usage file or write your own main
    function to use the sensor.
+
+## Compile and Run Tests
+
+The testframekwork used is CppUTest. Pass the source `.cpp`, `.c`  and header `.h`
+files from the tests and top level folder into your CPP compiler and run the
+resulting binary. This step may vary, depending on your platform.
+Here we demonstrate the procedure for Linux based platforms:
+
+1. Open up a terminal.
+2. Install CppUTest framework `apt install cpputest`.
+3. Navigate to the directory `tests`.
+4. Run `make` (this compiles the test code into one executable binary).
+5. Run the compiled executable with `./scd30_test_hw_i2c`.
+6. Now you should see the test output on your console.
 
 # Background
 
@@ -132,12 +149,6 @@ they are kept in their own file.
 ## Contributing
 
 **Contributions are welcome!**
-
-We develop and test this driver using our company internal tools (version
-control, continuous integration, code review etc.) and automatically
-synchronize the master branch with GitHub. But this doesn't mean that we don't
-respond to issues or don't accept pull requests on GitHub. In fact, you're very
-welcome to open issues or create pull requests :)
 
 This Sensirion library uses
 [`clang-format`](https://releases.llvm.org/download.html) to standardize the
