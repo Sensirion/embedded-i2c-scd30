@@ -3,7 +3,7 @@
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
 #include "pico/stdlib.h"
-#include "scd4x_i2c.h"
+#include "scd30_i2c.h"
 #include <stdio.h>
 
 /// I2C address
