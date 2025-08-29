@@ -10,7 +10,7 @@ add_executable(main
         main.c
         sensirion_i2c.c
         sensirion_i2c.hal.c
-        scd4x_i2c.c
+        scd30_i2c.c
         sensirion_common.c)
 
 # pull in common dependencies and additional i2c hardware support
