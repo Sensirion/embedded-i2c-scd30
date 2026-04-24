@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `read_serial_number` command to read out the sensor's serial number
-## [1.0.0] - 2025-8-22
 
-### Added
+### Removed
+- Removed operations using float
+## [1.0.0] - 2025-08-25
+
+### Changed
 
 - Updated to latest driver framework
-## [0.1.0] - 2022-7-20
+## [0.1.0] - 2022-04-08
 
 ### Added
 
